@@ -18,9 +18,12 @@ public class Problem {
 	    int mitad = matrizDeTerreno.length/2;
 		
         CasoIndiana(matrizMax, mitad);
+		
         int CasoIndiana = encontrarCaminoMaximo(matrizMax,mitad);
+		
 		actualizarMatrizDeTerreno();
 
+		
 		
 		matrizMax = new int[matrizDeTerreno.length][matrizDeTerreno[0].length];
         int CasoMarion = CasoMarion(matrizMax, mitad);
@@ -29,7 +32,10 @@ public class Problem {
 		matrizMax = new int[matrizDeTerreno.length][matrizDeTerreno[0].length];
         int CasoSallah = CasoSallah(matrizMax ,mitad);
 		
-		if(CasoIndiana + CasoMarion + CasoSallah < 0){
+		System.out.println(CasoIndiana);
+		System.out.println(CasoMarion);
+		System.out.println(CasoSallah);
+		if(CasoIndiana + CasoMarion + CasoSallah <= -3){
 			return -1;
 		}
 		
@@ -48,18 +54,20 @@ public class Problem {
 		return CasoIndiana + CasoMarion + CasoSallah;
 	}
 	
-	// Encontrar el numero de reliquias maxima qeu pueda llegar cada jugardor
+	// Encontrar el numero de reliquias maxima que pueda llegar cada jugador
 	private int hallarMayorReliquias(int[][] matrizMax){
 		int mitad = matrizDeTerreno.length/2;
-        int mayor = -1;
-		int subMayor = -1;
+        int mayor = 0;
+		int subMayor = 0;
 		for ( int i = 0; i< matrizMax[mitad].length;i++){
-            if(matrizMax[mitad][i] >= mayor){
+            if(matrizMax[mitad][i] > mayor ){
 				mayor = matrizMax[mitad][i];
 				subMayor = i;
 			}
 		}
-        if (mayor != -1 || subMayor !=-1){
+		
+
+        if (mayor != 0 || subMayor !=0 ){
             matrizDeTerreno[mitad][subMayor] = 0;
 			return mayor;
 		}
@@ -77,6 +85,7 @@ public class Problem {
 				}
 			}
 		}
+		
 	}
 
 	private int encontrarCaminoMaximo(int[][] matrizMax, int mitad) {
@@ -161,7 +170,7 @@ public class Problem {
 	//Ejecucion de cada uno de los Jugadores (Indiana, Marion y Sallah)
 	private int CasoSallah(int[][] matrizMax, int mitad) {
 		int p = matrizDeTerreno[0].length / 2; 
-	
+		
 		
 		for (int i = matrizDeTerreno.length - 1; i >= mitad; i--) {
 			int n = matrizDeTerreno.length - 1 - i; 
@@ -195,6 +204,7 @@ public class Problem {
 
 				}
 				else{
+					
 					matrizMax[i][j] = Math.max(Math.max(matrizMax[i+1][j-1] + matrizDeTerreno[i][j], matrizMax[i+1][j] + matrizDeTerreno[i][j]), matrizMax[i+1][j+1] + matrizDeTerreno[i][j]);
 				}
 
@@ -267,9 +277,9 @@ public class Problem {
 		return hallarMayorReliquias(matrizMax);
 	}
 
-	private void CasoIndiana(int[][] matrizMax, int mitad) {
+	private int CasoIndiana(int[][] matrizMax, int mitad) {
         int p=0;
- 
+		
         for(int i=0;i<mitad+1;i++) {
         	for(int j=0;j<p+1;j++) {
         		
@@ -310,6 +320,9 @@ public class Problem {
             }
             System.out.println();  // Salto de línea después de imprimir cada fila
         }
+
+		return p;
+
 
 	}
 		 
