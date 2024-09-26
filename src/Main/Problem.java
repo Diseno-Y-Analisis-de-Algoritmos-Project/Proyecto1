@@ -17,17 +17,34 @@ public class Problem {
 		
 	    int mitad = matrizDeTerreno.length/2;
 		
-        int CasoIndiana = CasoIndiana(matrizMax, mitad);
-        encontrarCaminoMaximo(matrizMax, mitad);
+        CasoIndiana(matrizMax, mitad);
+        int CasoIndiana = encontrarCaminoMaximo(matrizMax,mitad);
 		actualizarMatrizDeTerreno();
-		matrizMax = new int[matrizDeTerreno.length][matrizDeTerreno[0].length];
 
+		
+		matrizMax = new int[matrizDeTerreno.length][matrizDeTerreno[0].length];
         int CasoMarion = CasoMarion(matrizMax, mitad);
-		matrizMax = new int[matrizDeTerreno.length][matrizDeTerreno[0].length];
-        
 
+
+		matrizMax = new int[matrizDeTerreno.length][matrizDeTerreno[0].length];
         int CasoSallah = CasoSallah(matrizMax ,mitad);
 		
+		if(CasoIndiana + CasoMarion + CasoSallah < 0){
+			return -1;
+		}
+		
+		if(CasoIndiana == -1){
+			CasoIndiana = 0;
+		}
+		
+		if(CasoMarion == -1){
+			CasoMarion = 0;
+		}
+
+		if(CasoSallah == -1){
+			CasoSallah = 0;
+		}
+
 		return CasoIndiana + CasoMarion + CasoSallah;
 	}
 	
@@ -47,7 +64,7 @@ public class Problem {
 			return mayor;
 		}
 
-		return 0;
+		return -1;
 	}
 	
 	
@@ -62,43 +79,83 @@ public class Problem {
 		}
 	}
 
-	private void encontrarCaminoMaximo(int[][] matrizMax, int mitad) {
-		 int maxColumna = 0;
-	        int maxValor = Integer.MIN_VALUE;
+	private int encontrarCaminoMaximo(int[][] matrizMax, int mitad) {
+		int maxColumna = 0;
+		int maxValor = Integer.MIN_VALUE;
+	
+		// Encontrar la columna con el valor máximo en la fila de la mitad
+		for (int j = 0; j < matrizMax[mitad].length; j++) {
+			if (matrizMax[mitad][j] > maxValor) {
+				maxValor = matrizMax[mitad][j];
+				maxColumna = j;
+			}
+		}
+	
+		// Al llegar al final, la suma de reliquias debe coincidir con el valor máximo alcanzado
+		int reliquiasRestantes = maxValor;
+		int[] caminoColumnas = new int[mitad + 1];  // Para guardar las columnas del camino de Indiana
+	
+		// Restar el valor de la casilla donde llegó Indiana en la fila de la mitad
+		reliquiasRestantes = reliquiasRestantes - matrizDeTerreno[mitad][maxColumna];
+		System.out.println(matrizDeTerreno[mitad][maxColumna]);
+		System.out.println(reliquiasRestantes);
+		// Reconstruir el camino desde la fila de la mitad hacia arriba
+		for (int i = mitad; i >= 0; i--) {
+			// Guardamos la columna del camino en la fila actual
+			caminoColumnas[i] = maxColumna;
+	
+			// Restamos el valor de las reliquias en la celda actual (excepto en la primera iteración que ya restamos)
+			if (i != mitad) {
+				reliquiasRestantes -= matrizDeTerreno[i][maxColumna];
+			}
+	
+			// Ahora debemos encontrar de dónde vino el máximo en la fila anterior
+			if (i > 0) {
+				int mejorColumna = maxColumna; // Inicialmente asumimos que vino de la misma columna
+				
+				// Verificamos si vino de la diagonal izquierda
+				if (maxColumna > 0 && matrizMax[i-1][maxColumna-1] != Integer.MIN_VALUE) {
+					mejorColumna = maxColumna - 1;
+				}
+	
+				// Verificamos si vino de la diagonal derecha
+				if (maxColumna < matrizMax[0].length - 1 && matrizMax[i-1][maxColumna+1] != Integer.MIN_VALUE
+						&& matrizMax[i-1][maxColumna+1] > matrizMax[i-1][mejorColumna]) {
+					mejorColumna = maxColumna + 1;
+				}
+	
+				// Verificamos si la misma columna es mejor
+				if (matrizMax[i-1][maxColumna] > matrizMax[i-1][mejorColumna]) {
+					mejorColumna = maxColumna;
+				}
+	
+				// Actualizamos la columna para la siguiente iteración
+				maxColumna = mejorColumna;
+			}
+		}
+	
+		// Verificación: Al llegar a (0, 0), las reliquias restantes deberían ser 0
+		if (reliquiasRestantes != 0) {
+			System.out.println("Error en la reconstrucción del camino de Indiana, reliquias restantes: " + reliquiasRestantes);
+		} else {
+			// Ahora que sabemos que el camino es correcto, marcamos las celdas visitadas
+			for (int i = 0; i <= mitad; i++) {
+				matrizVisita[i][caminoColumnas[i]] = true;  // Marcamos la celda como visitada
+				matrizDeTerreno[i][caminoColumnas[i]] = 0;  // Actualizamos el terreno a 0
+			}
+		}
+	
+		// Mostrar la matriz de visitas para verificar el camino
+		for (int i = 0; i < matrizVisita.length; i++) {
+			for (int j = 0; j < matrizVisita[i].length; j++) {
+				System.out.print(matrizVisita[i][j] ? "T " : "F ");
+			}
+			System.out.println();
+		}
 
-	        // Encontrar el valor máximo en la fila de la mitad
-	        for (int j = 0; j < matrizMax[mitad].length; j++) {
-	            if (matrizMax[mitad][j] > maxValor) {
-	                maxValor = matrizMax[mitad][j];
-	                maxColumna = j;
-	            }
-	        }
-
-	        // Marcar el camino desde la fila mitad hacia arriba
-	        for (int i = mitad; i >= 0; i--) {
-	            matrizVisita[i][maxColumna] = true;  // Marcar la posición actual como parte del camino
-
-	            if (i > 0) {
-	                // Revisamos las tres posibles direcciones para decidir de dónde viene el valor máximo
-	                if (maxColumna > 0 && matrizMax[i][maxColumna] == matrizMax[i - 1][maxColumna - 1] + matrizDeTerreno[i][maxColumna]) {
-	                    maxColumna--;  // Moverse en diagonal izquierda
-	                } else if (maxColumna < matrizMax[i].length - 1 && matrizMax[i][maxColumna] == matrizMax[i - 1][maxColumna + 1] + matrizDeTerreno[i][maxColumna]) {
-	                    maxColumna++;  // Moverse en diagonal derecha
-	                } 
-	                // Si no es diagonal, viene de arriba (mantenerse en la misma columna)
-	            }
-	        }
-	    
-
-    
-	        
-        for (int i = 0; i < matrizVisita.length; i++) {
-            for (int j = 0; j < matrizVisita[i].length; j++) {
-                System.out.print(matrizVisita[i][j] ? "T " : "F ");
-            }
-            System.out.println();
-        }
-    }
+		return hallarMayorReliquias(matrizMax);
+	}
+	
 	
 
 	//Ejecucion de cada uno de los Jugadores (Indiana, Marion y Sallah)
@@ -210,7 +267,7 @@ public class Problem {
 		return hallarMayorReliquias(matrizMax);
 	}
 
-	private int CasoIndiana(int[][] matrizMax, int mitad) {
+	private void CasoIndiana(int[][] matrizMax, int mitad) {
         int p=0;
  
         for(int i=0;i<mitad+1;i++) {
@@ -254,7 +311,6 @@ public class Problem {
             System.out.println();  // Salto de línea después de imprimir cada fila
         }
 
-		return hallarMayorReliquias(matrizMax);
 	}
 		 
 }

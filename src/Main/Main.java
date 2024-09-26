@@ -42,10 +42,10 @@ public class Main {
 		
 		int[][] matriz = {
 	            {0, 2, 0},
-	            {300, 1, 8},
-	            {11, -1, 13},
-	            {40, 175, 80}, // Esta es la fila de la mitad (sin -1)
-	            {-1, 22, 23},
+	            {-1, -1, -1},
+	            {0, 0, 13},
+	            {0, 0, 80}, // Esta es la fila de la mitad (sin -1)
+	            {-1, 22, 300},
 	            {26, 27, -1},
 	            {31, 0, 33}
 	     };
@@ -61,7 +61,7 @@ public class Main {
         for(Problem problema : listaDeProblemas) {
         	
         	int maximoReliquias = problema.hallarMaximoReliquias();
-        	
+        	System.out.println("El maximo de reliquias es: "+maximoReliquias);
         	
         }
     }
