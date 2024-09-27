@@ -32,9 +32,9 @@ public class Problem {
 		matrizMax = new int[matrizDeTerreno.length][matrizDeTerreno[0].length];
         int CasoSallah = CasoSallah(matrizMax ,mitad);
 		
-		System.out.println(CasoIndiana);
-		System.out.println(CasoMarion);
-		System.out.println(CasoSallah);
+		//System.out.println(CasoIndiana);
+		//System.out.println(CasoMarion);
+		//System.out.println(CasoSallah);
 		if(CasoIndiana + CasoMarion + CasoSallah <= -3){
 			return -1;
 		}
@@ -106,8 +106,8 @@ public class Problem {
 	
 		// Restar el valor de la casilla donde llegó Indiana en la fila de la mitad
 		reliquiasRestantes = reliquiasRestantes - matrizDeTerreno[mitad][maxColumna];
-		System.out.println(matrizDeTerreno[mitad][maxColumna]);
-		System.out.println(reliquiasRestantes);
+		//System.out.println(matrizDeTerreno[mitad][maxColumna]);
+		//System.out.println(reliquiasRestantes);
 		// Reconstruir el camino desde la fila de la mitad hacia arriba
 		for (int i = mitad; i >= 0; i--) {
 			// Guardamos la columna del camino en la fila actual
@@ -145,7 +145,7 @@ public class Problem {
 	
 		// Verificación: Al llegar a (0, 0), las reliquias restantes deberían ser 0
 		if (reliquiasRestantes != 0) {
-			System.out.println("Error en la reconstrucción del camino de Indiana, reliquias restantes: " + reliquiasRestantes);
+			//System.out.println("Error en la reconstrucción del camino de Indiana, reliquias restantes: " + reliquiasRestantes);
 		} else {
 			// Ahora que sabemos que el camino es correcto, marcamos las celdas visitadas
 			for (int i = 0; i <= mitad; i++) {
@@ -157,9 +157,9 @@ public class Problem {
 		// Mostrar la matriz de visitas para verificar el camino
 		for (int i = 0; i < matrizVisita.length; i++) {
 			for (int j = 0; j < matrizVisita[i].length; j++) {
-				System.out.print(matrizVisita[i][j] ? "T " : "F ");
+				//System.out.print(matrizVisita[i][j] ? "T " : "F ");
 			}
-			System.out.println();
+			//System.out.println();
 		}
 
 		return hallarMayorReliquias(matrizMax);
@@ -212,12 +212,12 @@ public class Problem {
 		}
 	
 		// Mostrar la matriz máxima para Sallah
-		System.out.println("Matriz Maxima para Sallah:");
+		//System.out.println("Matriz Maxima para Sallah:");
 		for (int i = 0; i < matrizMax.length; i++) {
 			for (int j = 0; j < matrizMax[i].length; j++) {
-				System.out.print(matrizMax[i][j] + " ");
+				//System.out.print(matrizMax[i][j] + " ");
 			}
-			System.out.println();
+			//System.out.println();
 		}
 	
 		return hallarMayorReliquias(matrizMax);
@@ -266,12 +266,12 @@ public class Problem {
 		
 	
 		// Mostrar la matriz máxima
-		System.out.println("Matriz Maxima para Marion:");
+		//System.out.println("Matriz Maxima para Marion:");
 		for (int i = 0; i < matrizMax.length; i++) {
 			for (int j = 0; j < matrizMax[i].length; j++) {
-				System.out.print(matrizMax[i][j] + " ");
+				//System.out.print(matrizMax[i][j] + " ");
 			}
-			System.out.println();
+			//System.out.println();
 		}
 		
 		return hallarMayorReliquias(matrizMax);
@@ -316,9 +316,9 @@ public class Problem {
         
         for (int i = 0; i < matrizMax.length; i++) {  // Recorre cada fila
             for (int j = 0; j < matrizMax[i].length; j++) {  // Recorre cada columna de la fila actual
-                System.out.print(matrizMax[i][j] + " ");  // Imprime el elemento seguido de un espacio
+                //System.out.print(matrizMax[i][j] + " ");  // Imprime el elemento seguido de un espacio
             }
-            System.out.println();  // Salto de línea después de imprimir cada fila
+            //System.out.println();  // Salto de línea después de imprimir cada fila
         }
 
 		return p;
